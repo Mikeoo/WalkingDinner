@@ -1,0 +1,63 @@
+body, html {
+    padding: 0;
+    margin: 50px 50px 0 50px;
+    font-size: 25px;
+    font-family: Calibri;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.card {
+    position: relative;
+    height: 300px;
+    font-family: localfont, Calibri;
+    border-bottom: 1px solid black;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.head {
+    font-size: 2em;
+    font-weight: bold;
+    height: 80px;
+    width: 100%;
+    border-bottom: 1px solid black;
+}
+
+.body {
+    padding-top: 10px;
+    position: relative;
+    height: 100%;
+}
+
+.to {
+    font-size: 1.5em;
+    margin: 5px 0 5px 0;
+}
+
+ul li {
+    float: left;
+    width: 33%;
+}
+
+ul {
+    width: 100%;
+    list-style-type: disc;
+    font-size: 15px;
+}
+
+#foldline {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 50%;
+    border-top: 1px dashed black;
+    z-index: 1;
+}
+
+.address {
+}

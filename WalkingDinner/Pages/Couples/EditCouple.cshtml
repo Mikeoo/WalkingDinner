@@ -1,0 +1,55 @@
+﻿@page
+@model WalkingDinner.Pages.Couples.EditCoupleModel
+@using WalkingDinner.Extensions;
+@{
+    ViewData[ "Title" ] = "Index";
+}
+
+<h4>Uw gegevens</h4>
+<hr />
+<div class="container-fluid col-xl-5 col-md-9 col-sm-12">
+    <form method="post">
+
+        @if ( !string.IsNullOrEmpty( (string)ViewData[ "status" ] ) ) {
+            <h3 class="text-info">@ViewData[ "status" ]</h3>
+        }
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <span asp-validation-for="Couple" class="text-danger"></span>
+
+        @if ( Model.Couple.Dinner.HasPrice && Model.Couple.Validated ) {
+            <div class="form-group">
+                @if ( !Model.Couple.HasPayed ) {
+                    <div class="text-warning">Let op! Uw betaling is nog niet afgerond. Betaal vóór @Model.Couple.Dinner.SubscriptionStop.AddDays( -1 ).ToString( "g" ) om deel te nemen aan dit dinner.</div>
+                }
+                <a class="text-info" asp-page="@(ModelPath.Get<Couples.PaymentModel>())" role="button">Betaal status</a>
+            </div>
+        }
+
+        @{ await Html.RenderPartialAsync( "_CoupleView", Model.Couple, new ViewDataDictionary( ViewData ) { { "HideIBAN", !Model.Couple.Dinner.HasPrice } } ); }
+
+        @*<partial name="_CoupleView" for="Couple" />*@
+
+        <div class="form-group">
+            @{
+                string submitText = Model.Couple.Validated ? "Opslaan" : "Accepteren";
+            }
+            <input type="submit" value="@submitText" class="btn btn-primary" />
+        </div>
+
+        @if ( Model.Couple.Validated && !Model.Couple.IsAdmin ) {
+            <div class="form-group">
+                <a role="button" asp-page="@(ModelPath.Get<Couples.RemoveModel>())" class="btn btn-danger">Uitnodinging annuleren</a>
+            </div>
+        }
+
+    </form>
+    @if ( Model.Couple.IsAdmin ) {
+        <a asp-page="@(ModelPath.Get<Management.EditDinnerModel>())">Terug naar overzicht</a>
+    }
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync( "_ValidationScriptsPartial" );}
+}

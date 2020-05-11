@@ -1,0 +1,162 @@
+﻿@page
+@model WalkingDinner.Pages.Management.EditDinnerModel
+@using WalkingDinner.Extensions
+@{
+    ViewData[ "Title" ] = "Management";
+}
+
+<h1>Management</h1>
+
+<div class="container-fluid col-md-8">
+
+    <h3>Uitnodigen</h3>
+
+    <form class="form-horizontal" style="max-width:800px" method="post" asp-page-handler="Invite">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <span asp-validation-for="Invite" class="text-danger"></span>
+
+        <partial name="_PersonView" for="Invite.Person" />
+
+        <div class="form-group">
+            <label asp-for="Invite.EmailAddress" class="control-label">Email adres</label>
+            <input asp-for="Invite.EmailAddress" class="form-control" />
+            <span asp-validation-for="Invite.EmailAddress" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">Uitnodigen</button>
+            </div>
+        </div>
+
+        @if ( !string.IsNullOrEmpty( (string)ViewData[ "InviteResult" ] ) ) {
+
+            <div class="alert alert-primary">
+                @ViewData[ "InviteResult" ]
+            </div>
+        }
+
+    </form>
+
+    <table class="table">
+
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor( model => model.Couple.Validated )
+                </th>
+                <th>
+                    @Html.DisplayNameFor( model => model.Couple.EmailAddress )
+                </th>
+                <th>
+                    @Html.DisplayNameFor( model => model.Couple.PhoneNumber )
+                </th>
+                <th>
+                    Naam
+                </th>
+                <th>
+                    Aantal personen
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ( var item in Model.Couple.Dinner.Couples ) {
+                @*@if ( item.IsAdmin ) { continue; }*@
+                <tr>
+                    <td>
+                        @Html.DisplayFor( modelItem => item.Validated )
+                    </td>
+                    <td>
+                        @Html.DisplayFor( modelItem => item.EmailAddress )
+                    </td>
+                    <td>
+                        @Html.DisplayFor( modelItem => item.PhoneNumber )
+                    </td>
+                    <td>
+                        @item.PersonMain.ToString()
+                    </td>
+                    <td>
+                        @(item.PersonGuest == null ? 1 : 2)
+                    </td>
+                    <td>
+                        @if ( item.IsAdmin ) {
+                            <a asp-page="@(ModelPath.Get<Couples.EditCoupleModel>())">Bewerken</a>
+                        } else {
+                            <a asp-page="@(ModelPath.Get<Management.RemoveCoupleModel>())" asp-route-IdToRemove="@item.ID">Verwijderen</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h3>Beheer</h3>
+    <form class="form-horizontal" method="post" asp-page-handler="Edit">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <h4>Het diner</h4>
+        <hr />
+
+        <div class="form-group">
+            <label asp-for="Couple.Dinner.Title" class="control-label"></label>
+            <input asp-for="Couple.Dinner.Title" class="form-control" />
+            <span asp-validation-for="Couple.Dinner.Title" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Couple.Dinner.Description" class="control-label"></label>
+            <textarea asp-for="Couple.Dinner.Description" class="form-control"></textarea>
+            <span asp-validation-for="Couple.Dinner.Description" class="text-danger"></span>
+        </div>
+
+
+        <h4>Verzamelpunt</h4>
+        <hr />
+
+        <partial name="_AddressView" for="Couple.Dinner.Address" />
+
+        <h4>Data</h4>
+        <hr />
+        <div>
+            <dl>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor( model => model.Couple.Dinner.SubscriptionStop )
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor( model => model.Couple.Dinner.SubscriptionStop )
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor( model => model.Couple.Dinner.Date )
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor( model => model.Couple.Dinner.Date )
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor( model => model.Couple.Dinner.Price )
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor( model => model.Couple.Dinner.Price )
+                </dd>
+            </dl>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">Opslaan</button>
+            </div>
+        </div>
+
+
+        @if ( !string.IsNullOrEmpty( (string)ViewData[ "EditResult" ] ) ) {
+
+            <div class="alert alert-primary">
+                @ViewData[ "EditResult" ]
+            </div>
+        }
+
+    </form>
+</div>

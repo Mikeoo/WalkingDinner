@@ -1,0 +1,104 @@
+﻿@page
+@model WalkingDinner.Pages.Management.OverviewModel
+@{
+    ViewData[ "Title" ] = "Overview";
+}
+<div class="container">
+    <br />
+    <br />
+    <form class="form-horizontal" method="post">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <h4>Er hebben zich @Model.CoupleCount duo's aangemeld Kies hieronder het schema voor het diner:</h4>
+        <hr />
+
+        <h3>Aantal gangen:</h3>
+        <hr />
+
+        @foreach ( var entry in Model.MenuItems ) {
+
+            <div class="form-group">
+
+                <label asp-for="CourseSelection[entry.Key]" class="col-sm-2 control-label">@entry.Key</label>
+                <input asp-for="CourseSelection[entry.Key]" class="course-select form-control" type="checkbox" />
+            </div>
+        }
+
+        <h3>Aantal parallelle rondes zijn: <span id="course-count"></span></h3>
+        <div class="p-1 text-info" id="course-selection-warning"></div>
+        <div class="p-1 text-warning" id="course-amount-warning"></div>
+        <div class="p-1 text-danger" asp-validation-for="CourseSelection" id="course-selection-error"></div>
+
+        <br />
+
+        <div class="form-group">
+            <input type="submit" value="Opslaan & verzenden" class="btn btn-primary" />
+            @if ( !string.IsNullOrEmpty( (string)ViewData[ "Schema-error" ] ) ) {
+
+                <div class="alert p-1 text-danger">@ViewData[ "Schema-error" ]</div>
+            }
+        </div>
+
+        @if ( !string.IsNullOrEmpty( (string)ViewData[ "message" ] ) ) {
+
+            <div class="alert alert-primary">
+                @ViewData[ "message" ]
+            </div>
+        }
+    </form>
+</div>
+
+<script>
+
+    $(function () {
+
+        $(".course-select").on("change", function () {
+
+            var courseCount = 0;
+            var selections = $(".course-select");
+
+            selections.each(function (){
+
+                var checked = $(this).prop("checked");
+                if (checked) {
+
+                    courseCount++;
+                }
+            });
+
+            $("#course-selection-warning").html("");
+            $("#course-selection-error").html("");
+            $("#course-amount-warning").html("");
+
+            if (courseCount < 2) {
+                // ERROR
+                $("#course-selection-error").html("Selecteer minimaal 2 rondes!");
+                $("#course-count").html("");
+                return;
+            }
+
+            var rounds = Math.floor(( @Model.CoupleCount ) / (courseCount));
+            var leftoverCouples = @Model.CoupleCount - rounds * courseCount;
+
+            if ( leftoverCouples > 0 ) {
+
+                $("#course-selection-warning").html(`In de huidige verdeling koken er ${ leftoverCouples } duo's niet.`);
+            }
+
+            if (courseCount > 4) {
+
+                var max = courseCount * 2;
+                if (leftoverCouples > 0) {
+                    max += 2;
+                }
+
+                $("#course-amount-warning").html(`Let op! Er worden tot ${ max } mensen uitgenodigd per gang. Past dat in elk huis?` );
+            }
+
+            $("#course-count").html(rounds);
+
+        }).trigger("change");
+    });
+
+</script>

@@ -1,0 +1,25 @@
+﻿@page
+@model Pages.IndexModel
+@using WalkingDinner.Extensions
+@{
+    ViewData[ "Title" ] = "Home page";
+}
+
+<div class="text-center">
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container-fluid">
+            <h1 class="display-4">Welcome to Walking Dinner</h1>
+            <p class="lead">The perfect place to start a walking dinner in your Neighbourhood!</p>
+            <a class="btn btn-primary btn-lg" asp-page="@(ModelPath.Get<Setup.CreateDinnerModel>())" role="button">Create your walking dinner!</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <p> hey</p>
+    </div>
+
+    @*
+        <p><a class="navbar-brand" asp-page="Management" asp-route-AdminCode="uLVpjTzPH9Ve2ct5Q7hfkXoY5OfqVIHLHAg7iEUx" asp-route-DinnerID="1">Admin Page</a></p>
+        <p><a class="navbar-brand" asp-page="Overview" asp-route-AccessCode="RDAO-peuuDSf75I4-Qld1Kul-awu-vJ8eS0NdY-C" asp-route-DinnerID="1">Overview Page</a></p>
+    *@
+</div>

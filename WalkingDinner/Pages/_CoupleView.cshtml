@@ -1,0 +1,63 @@
+﻿@model WalkingDinner.Models.Couple
+
+<div class="form-group">
+    <label asp-for="EmailAddress" class="control-label"></label>
+    <input asp-for="EmailAddress" class="form-control" />
+    <span asp-validation-for="EmailAddress" class="text-danger"></span>
+</div>
+
+
+<div class="form-group">
+    <label asp-for="PhoneNumber" class="control-label"></label>
+    <input asp-for="PhoneNumber" class="form-control" />
+    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+</div>
+
+<partial name="_PersonView" for="PersonMain" />
+
+@if ( ViewData[ "HideIBAN" ] == null || !(bool)ViewData[ "HideIBAN" ] ) {
+
+    <div class="form-group">
+        <label asp-for="IBAN" class="control-label"></label>
+        <input asp-for="IBAN" class="form-control" />
+        <span asp-validation-for="IBAN" class="text-danger"></span>
+    </div>
+}
+
+<div class="form-group">
+    <label for="has-person-guest" class="control-label">Ik neem iemand mee</label>
+    @Html.CheckBox( "has-person-guest", Model?.PersonGuest != null, new { id = "has-person-guest" } ) ;
+</div>
+
+<div id="person-guest">
+
+    <partial name="_PersonView" for="PersonGuest" />
+
+</div>
+
+<h5>Adres</h5>
+<hr />
+<partial name="_AddressView" for="Address" />
+
+<div class="form-group">
+    <label asp-for="DietaryGuidelines" class="control-label"></label>
+    <textarea asp-for="DietaryGuidelines" class="form-control" rows="5"></textarea>
+    <span asp-validation-for="DietaryGuidelines" class="text-danger"></span>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('#has-person-guest').on('change', function () {
+
+            var checked = $(this).prop('checked');
+            var children = $('#person-guest').find("input");
+            var disabled = (checked == true) ? false : 'disabled';
+
+            for (var i = 0; i < children.length; i++) {
+
+                var child = $(children[i]);
+                child.prop('disabled', disabled);
+            }
+        }).trigger('change');
+    });
+</script>

@@ -1,0 +1,46 @@
+﻿@page
+@model WalkingDinner.Pages.Couples.PaymentModel
+@using WalkingDinner.Extensions;
+@{
+    ViewData[ "Title" ] = "Payment";
+
+    string status = WalkingDinner.Mollie.MollieAPI.TranslateStatus( Model.PaymentStatus );
+    bool hasPayed = WalkingDinner.Mollie.MollieAPI.TransactionPending( Model.PaymentStatus );
+}
+
+
+<h4>Uw gegevens</h4>
+<hr />
+<div class="container-fluid col-xl-5 col-md-9 col-sm-12">
+
+    @if ( !string.IsNullOrEmpty( (string)ViewData[ "status" ] ) ) {
+        <h3 class="text-info">@ViewData[ "status" ]</h3>
+    }
+
+    @if ( !string.IsNullOrEmpty( (string)ViewData[ "error" ] ) ) {
+        <h3 class="text-danger">@ViewData[ "error" ]</h3>
+    }
+
+    <div class="form-group">
+        <label class="control-label">Status: @status</label>
+    </div>
+
+    <form method="post">
+
+        @if ( !hasPayed ) {
+
+            <div class="form-group">
+                <button class="btn btn-primary" asp-page-handler="Pay">Betalen</button>
+            </div>
+
+        } else {
+
+            <div class="form-group">
+                <button class="btn btn-danger" asp-page-handler="Cancel">Betaling annuleren</button>
+            </div>
+
+        }
+    </form>
+
+    <a asp-page="@(ModelPath.Get<Couples.EditCoupleModel>())">Terug naar overzicht</a>
+</div>

@@ -1,0 +1,115 @@
+﻿@page
+@model Pages.Setup.CreateDinnerModel
+@using WalkingDinner.Extensions
+@using WalkingDinner.Models
+@{
+    ViewData[ "Title" ] = "Diner aanmaken";
+}
+
+<h1>Diner aanmaken</h1>
+<hr />
+
+<div class="container-fluid col-xl-5 col-md-9 col-sm-12">
+
+    <form method="post">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <span asp-validation-for="Dinner" class="text-danger"></span>
+
+        <h4>Het diner</h4>
+        <hr />
+
+        <div class="form-group">
+            <label asp-for="Dinner.Title" class="control-label"></label>
+            <input asp-for="Dinner.Title" class="form-control" />
+            <span asp-validation-for="Dinner.Title" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Dinner.Description" class="control-label"></label>
+            <textarea asp-for="Dinner.Description" class="form-control"></textarea>
+            <span asp-validation-for="Dinner.Description" class="text-danger"></span>
+        </div>
+
+
+        <h4>Verzamelpunt</h4>
+        <hr />
+
+        <partial name="_AddressView" for="Dinner.Address" />
+
+
+        <h4>Data</h4>
+        <hr />
+
+        <div class="form-group">
+            <label asp-for="Dinner.Date" class="control-label"></label>
+            <input asp-for="Dinner.Date" class="form-control" value="@Model.Dinner.Date.ToString("s")" min="@DateTime.Now.AddDays( Dinner.MIN_DAYS_IN_ADVANCE ).SetTime( 0, 0 ).ToString( "s" )" />
+            <span asp-validation-for="Dinner.Date" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Dinner.SubscriptionStop" class="control-label"></label>
+            <input asp-for="Dinner.SubscriptionStop" class="form-control" value="@Model.Dinner.SubscriptionStop.ToString("s")" min="@DateTime.Now.AddDays( Dinner.MIN_DAYS_IN_ADVANCE - 1 ).SetTime( 0, 0 ).ToString( "s" )" />
+            <span asp-validation-for="Dinner.SubscriptionStop" class="text-danger"></span>
+        </div>
+
+
+        <h4>Prijsinformatie</h4>
+        <hr />
+
+        <div class="form-group">
+            <label asp-for="Dinner.Price" class="control-label"></label>
+            <div class="input-group">
+                <span class="form-control" style="flex:none">€</span>
+                <input asp-for="Dinner.Price" class="form-control" />
+            </div>
+            <div id="slider-price" class="mt-2"></div>
+            <span asp-validation-for="Dinner.Price" class="text-danger"></span>
+        </div>
+
+
+        <h4>Uw gegevens</h4>
+        <hr />
+
+        <partial name="_CoupleView" for="Couple" />
+
+        <div class="form-group">
+            <input type="submit" value="Aanmaken" class="btn btn-primary" />
+        </div>
+
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync( "_ValidationScriptsPartial" );}
+
+    <script type="text/javascript">
+        $(function () {
+
+            var price = @Model.Dinner?.Price.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture);
+            var toCurrency = function (p) {
+
+                return p.toFixed(2).toString().replace('.', ',');
+            };
+
+            $("#slider-price").slider({
+                range: "max",
+                min: 0,
+                max: 30,
+                value: price,
+                step: 0.1,
+                slide: function (event, ui) {
+
+                    var value = toCurrency(ui.value);
+
+                    $("#Dinner_Price").val(value);
+                }
+            });
+
+            // $("#Dinner_Price").attr("type", "hidden");
+
+            $("#slider-price").slider("value");
+        });
+    </script>
+}

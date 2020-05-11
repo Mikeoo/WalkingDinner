@@ -1,0 +1,40 @@
+﻿
+* Landingspagina
+
+* Nieuw dinner aanmaken
+
+* Contact
+
+* Privacy policy
+
+* Bugreport / Error
+
+* Beheerpagina dinner
+	* Mensen uitnodigen -> uitnodigingen zien
+	* Details aanpassen
+	* Overzicht van inschrijving
+	* Optie om indeling te maken -> financiele verdeling
+
+* Uitnodiging beheren
+	* Akkoord gaan / afwijzen
+	* Gegevens kunnen achterlaten / zien
+	* Dinner zien waar je voor inschrijft
+
+
+aperitief met amuse- 20min
+
+koud voorgerecht- 20min
+
+warm voorgerecht- 20min
+
+hoofdgerecht- 40min
+
+nagerecht - 20min
+
+
+Bij de overview: controleren of iemand heeft geaccepteerd.
+Losse duo's toevoegen aan schema
+Admin weergeven in overzicht van alle duo's
+Management van dinner: wijzigen beschrijving / verzamelpunt
+Tijd in kan stellen per maaltijd
+Verdeling van het geld

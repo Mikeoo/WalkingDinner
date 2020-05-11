@@ -1,0 +1,42 @@
+﻿@page
+@model WalkingDinner.Pages.Couples.SeeInvitationModel
+@using WalkingDinner.Extensions
+@{
+    ViewData[ "Title" ] = "Uitnodiging";
+}
+
+<h1>@ViewData[ "Title" ]</h1>
+
+<div class="container-fluid col-xl-5 col-md-9 col-sm-12">
+    <h4>Dinner</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor( model => model.Couple.Dinner.Title )
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor( model => model.Couple.Dinner.Title )
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor( model => model.Couple.Dinner.Description )
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor( model => model.Couple.Dinner.Description )
+        </dd>
+        <dt class="col-sm-2">
+            Verzamelpunt
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor( model => model.Couple.Dinner.Address.Street ) @Html.DisplayFor( model => model.Couple.Dinner.Address.Number ) @Html.DisplayFor( model => model.Couple.Dinner.Address.NumberSuffix )
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor( model => model.Couple.Dinner.Date )
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Couple.Dinner.Date.ToString( "g" )
+        </dd>
+    </dl>
+
+    <a class="btn btn-primary" asp-page="@(ModelPath.Get<Couples.EditCoupleModel>())" role="button">Accepteer uitnodiging</a>
+</div>
+

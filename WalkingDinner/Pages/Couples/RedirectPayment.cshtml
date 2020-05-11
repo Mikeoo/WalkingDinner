@@ -1,0 +1,18 @@
+﻿@page
+@model WalkingDinner.Pages.Couples.RedirectPaymentModel
+@using WalkingDinner.Extensions;
+@{
+    ViewData[ "Title" ] = "RedirectPayment";
+
+    string status = WalkingDinner.Mollie.MollieAPI.TranslateStatus( Model.PaymentStatus );
+    bool hasPayed = WalkingDinner.Mollie.MollieAPI.TransactionPending( Model.PaymentStatus );
+}
+
+@if ( hasPayed ) {
+    <h1>Bedankt voor uw betaling!</h1>
+} else {
+    <h1>Er is iets fout gegaan, probeer het later opnieuw</h1>
+}
+<h3>Status: @status</h3>
+<a class="text-info" asp-page="@(ModelPath.Get<Couples.EditCoupleModel>())" role="button">Terug naar overzicht</a>
+
